@@ -47,5 +47,3 @@ const App: React.FC = () => (
     </IonReactRouter>
   </IonApp>
 );
-
-export default App;
