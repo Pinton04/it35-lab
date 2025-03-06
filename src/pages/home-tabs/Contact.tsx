@@ -7,8 +7,9 @@ import {
       IonTitle, 
       IonToolbar 
   } from '@ionic/react';
+import SearchContainer from '../../components/SearchContainer';
   
-  const Feed: React.FC = () => {
+  const Contact: React.FC = () => {
     return (
       <IonPage>
         <IonHeader>
@@ -16,23 +17,14 @@ import {
             <IonButtons slot='start'>
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>Feed</IonTitle>
+            <IonTitle>Contact</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
-            }}
-          >
-            Feed
-          </div>
+         <SearchContainer/>
         </IonContent>
       </IonPage>
     );
   };
   
-  export default Feed;
+  export default Contact;
