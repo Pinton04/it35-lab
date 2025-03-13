@@ -1,41 +1,54 @@
 import React, { useState } from 'react';
 import { 
   IonButton,
+  IonButtons,
   IonContent, 
   IonHeader, 
   IonInput,
   IonItem,
   IonLabel,
+  IonMenuButton, 
   IonPage, 
   IonTitle, 
   IonToolbar, 
   useIonRouter
 } from '@ionic/react';
 
-const Login: React.FC = () => {
+const Registration: React.FC = () => {
   const navigation = useIonRouter();
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const doLogin = () => {
-    if (username === 'user' && password === 'password') {
-      navigation.push('/it35-lab/app', 'forward', 'replace');
-    } else {
-      setError('Invalid username or password');
+  const doRegister = () => {
+    if (!username || !password || !email) {
+      setError('All fields are required.');
+      return;
     }
-  }
 
-  const navigateToRegister = () => {
-    navigation.push('/it35-lab/register', 'forward', 'replace');
+    // Here you can add additional logic to handle user registration
+    // For example, sending the data to an API or saving it locally
+
+    setError('');
+    setSuccess('User registered successfully.');
+
+    // Navigate back to login after successful registration
+    setTimeout(() => {
+      navigation.push('/it35-lab', 'back', 'replace');
+    }, 1500);
   }
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Login</IonTitle>
+          <IonButtons slot='start'>
+            <IonMenuButton></IonMenuButton>
+          </IonButtons>
+          <IonTitle>Registration</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
@@ -56,11 +69,18 @@ const Login: React.FC = () => {
             clearOnEdit
           ></IonInput>
         </IonItem>
+        <IonItem>
+          <IonLabel position="floating">Email</IonLabel>
+          <IonInput 
+            type="email" 
+            value={email} 
+            onIonChange={e => setEmail(e.detail.value!)} 
+            clearOnEdit
+          ></IonInput>
+        </IonItem>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <IonButton onClick={doLogin} expand="full">
-          Login
-        </IonButton>
-        <IonButton onClick={navigateToRegister} expand="full" color="secondary" style={{ marginTop: '1rem' }}>
+        {success && <p style={{ color: 'green' }}>{success}</p>}
+        <IonButton onClick={doRegister} expand="full">
           Register
         </IonButton>
       </IonContent>
@@ -68,4 +88,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Registration;
