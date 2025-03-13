@@ -20,7 +20,10 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
 
   const doLogin = () => {
-    if (username === 'user' && password === 'password') {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((user: any) => user.username === username && user.password === password);
+
+    if (user) {
       navigation.push('/it35-lab/app', 'forward', 'replace');
     } else {
       setError('Invalid username or password');

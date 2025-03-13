@@ -29,8 +29,17 @@ const Registration: React.FC = () => {
       return;
     }
 
-    // Here you can add additional logic to handle user registration
-    // For example, sending the data to an API or saving it locally
+    // Save user data to local storage
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userExists = users.some((user: any) => user.username === username);
+
+    if (userExists) {
+      setError('Username already exists.');
+      return;
+    }
+
+    users.push({ username, password, email });
+    localStorage.setItem('users', JSON.stringify(users));
 
     setError('');
     setSuccess('User registered successfully.');
