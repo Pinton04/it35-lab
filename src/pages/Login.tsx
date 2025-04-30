@@ -1,4 +1,3 @@
-
 import { 
   IonAlert,
   IonAvatar,
@@ -11,7 +10,6 @@ import {
   IonToast,  
   useIonRouter
 } from '@ionic/react';
-import { logoIonic } from 'ionicons/icons';
 import { useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
 
@@ -52,36 +50,36 @@ const Login: React.FC = () => {
   
   return (
     <IonPage>
-      <IonContent className='ion-padding'>
+      <IonContent className='ion-padding' style={{ '--background': '#cce5ff' }}>
         <div style={{
           display: 'flex',
           flexDirection:'column',
           alignItems: 'center',
           justifyContent: 'center',
-          marginTop:'25%'
+          marginTop:'20%'
         }}>
           <IonAvatar
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '150px',
-              height: '150px',
-              borderRadius: '50%', 
-              overflow: 'hidden' 
+              width: '140px',
+              height: '140px',
+              marginBottom: '16px',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
             }}
           >
-            <IonIcon 
-              icon={logoIonic}
-              color='primary'
-              style={{ fontSize: '120px', color: '#6c757d' }} 
+            <img 
+              src="https://cdn-icons-png.flaticon.com/512/616/616408.png" 
+              alt="Cute Avatar"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </IonAvatar>
+
           <h1 style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>USER LOGIN</h1>
+            fontWeight: 'bold',
+            color: '#333',
+            fontSize: '24px',
+            marginBottom: '20px'
+          }}>user</h1>
+
           <IonInput
             label="Email" 
             labelPlacement="floating" 
@@ -101,7 +99,8 @@ const Login: React.FC = () => {
             <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
           </IonInput>
         </div>
-        <IonButton onClick={doLogin} expand="full" shape='round'>
+
+        <IonButton onClick={doLogin} expand="full" shape='round' color="primary" style={{ marginTop: '20px' }}>
           Login
         </IonButton>
 
@@ -109,10 +108,8 @@ const Login: React.FC = () => {
           Don't have an account?
         </IonButton>
 
-        {/* Reusable AlertBox Component */}
         <AlertBox message={alertMessage} isOpen={showAlert} onClose={() => setShowAlert(false)} />
 
-        {/* IonToast for success message */}
         <IonToast
           isOpen={showToast}
           onDidDismiss={() => setShowToast(false)}
