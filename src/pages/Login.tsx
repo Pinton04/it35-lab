@@ -1,32 +1,123 @@
 import { 
+  IonAlert,
+  IonAvatar,
   IonButton,
-  IonButtons,
-    IonContent, 
-    IonHeader, 
-    IonMenuButton, 
-    IonPage, 
-    IonTitle, 
-    IonToolbar, 
-    useIonRouter
+  IonContent, 
+  IonIcon, 
+  IonInput, 
+  IonInputPasswordToggle,  
+  IonPage,  
+  IonToast,  
+  useIonRouter
 } from '@ionic/react';
+import { useState } from 'react';
+import { supabase } from '../utils/supabaseClient';
+
+const AlertBox: React.FC<{ message: string; isOpen: boolean; onClose: () => void }> = ({ message, isOpen, onClose }) => {
+  return (
+    <IonAlert
+      isOpen={isOpen}
+      onDidDismiss={onClose}
+      header="Notification"
+      message={message}
+      buttons={['OK']}
+    />
+  );
+};
 
 const Login: React.FC = () => {
   const navigation = useIonRouter();
-  const doLogin = () => {
-    ( " " )
-      navigation.push('/it35-lab/app','forward','replace');
-  }
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const doLogin = async () => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      setAlertMessage(error.message);
+      setShowAlert(true);
+      return;
+    }
+
+    setShowToast(true); 
+    setTimeout(() => {
+      navigation.push('/it35-lab/app', 'forward', 'replace');
+    }, 300);
+  };
+  
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className='ion-padding'>
-          <IonButton onClick={() => doLogin()} expand="full">
-              Login
-          </IonButton>
+      <IonContent className='ion-padding' style={{ '--background': '#cce5ff' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection:'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop:'20%'
+        }}>
+          <IonAvatar
+            style={{
+              width: '140px',
+              height: '140px',
+              marginBottom: '16px',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+            }}
+          >
+            <img 
+              src="https://cdn-icons-png.flaticon.com/512/616/616408.png" 
+              alt="Cute Avatar"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </IonAvatar>
+
+          <h1 style={{
+            fontWeight: 'bold',
+            color: '#333',
+            fontSize: '24px',
+            marginBottom: '20px'
+          }}>user</h1>
+
+          <IonInput
+            label="Email" 
+            labelPlacement="floating" 
+            fill="outline"
+            type="email"
+            placeholder="Enter Email"
+            value={email}
+            onIonChange={e => setEmail(e.detail.value!)}
+          />
+          <IonInput style={{ marginTop:'10px' }}      
+            fill="outline"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onIonChange={e => setPassword(e.detail.value!)}
+          >
+            <IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
+          </IonInput>
+        </div>
+
+        <IonButton onClick={doLogin} expand="full" shape='round' color="primary" style={{ marginTop: '20px' }}>
+          Login
+        </IonButton>
+
+        <IonButton routerLink="/it35-lab/app/home/signup" expand="full" fill="clear" shape='round'>
+          Don't have an account?
+        </IonButton>
+
+        <AlertBox message={alertMessage} isOpen={showAlert} onClose={() => setShowAlert(false)} />
+
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message="Login successful! Redirecting..."
+          duration={1500}
+          position="top"
+          color="primary"
+        />
       </IonContent>
     </IonPage>
   );
